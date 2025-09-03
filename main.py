@@ -6,7 +6,6 @@ from datetime import datetime
 # Вставьте ваш токен бота сюда
 BOT_TOKEN = "7514342466:AAEaW7lgV0xrVbAmle8Z1JYG6yLao54GHpk"
 ADMIN_ID = 217697846  # Ваш telegram ID
-
 # Включаем логирование
 logging.basicConfig(level=logging.INFO)
 
@@ -195,7 +194,39 @@ def process_text(message):
     else:
         bot.send_message(message.chat.id, "🤖 Для начала работы нажмите /start")
 
+
+import telebot
+from telebot import types
+import logging
+from datetime import datetime
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
+import os
+
+# Фиктивный веб-сервер для Render
+class HealthHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        self.wfile.write(b'Bot is running!')
+    
+    def log_message(self, format, *args):
+        pass  # Отключаем логи веб-сервера
+
+def start_web_server():
+    port = int(os.environ.get('PORT', 10000))
+    server = HTTPServer(('0.0.0.0', port), HealthHandler)
+    print(f"🌐 Веб-сервер запущен на порту {port}")
+    server.serve_forever()
+
 # Запуск бота
 if __name__ == "__main__":
     print("🤖 Бот запущен!")
+    
+    # Запускаем веб-сервер в отдельном потоке
+    web_thread = threading.Thread(target=start_web_server, daemon=True)
+    web_thread.start()
+    
+    # Запускаем бота
     bot.infinity_polling()
