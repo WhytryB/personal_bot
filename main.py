@@ -5,7 +5,7 @@ from datetime import datetime
 
 # Вставьте ваш токен бота сюда
 BOT_TOKEN = "7514342466:AAEaW7lgV0xrVbAmle8Z1JYG6yLao54GHpk"
-ADMIN_ID = 314085025  # Ваш telegram ID
+ADMIN_ID = 217697846  # Ваш telegram ID
 
 # Включаем логирование
 logging.basicConfig(level=logging.INFO)
